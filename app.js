@@ -5,6 +5,7 @@ const state = { step: 1, services: [], serviceCards: new Map(), serviceId: '', p
 let servicesLoadRevision = 0;
 let serviceDetailsTrigger = null;
 let availabilityLoadRevision = 0;
+const AVAILABILITY_REQUEST_TIMEOUT_MS = 10000;
 let selectionValidationPending = false;
 let selectionValidationBlocked = false;
 let bookingResultUncertain = false;
@@ -364,7 +365,12 @@ function visibleServices() {
   });
 }
 
-async function loadPublicSlots(service, start, end, locationId = state.locationId) {
+function availabilityRpc(name, parameters, signal) {
+  const request = db.rpc(name, parameters);
+  return signal && typeof request?.abortSignal === 'function' ? request.abortSignal(signal) : request;
+}
+
+async function loadPublicSlots(service, start, end, locationId = state.locationId, signal = null) {
   if (state.resourceScheduling) {
     const parameters = {
       p_slug: requestedOrganizationSlug,
@@ -373,24 +379,24 @@ async function loadPublicSlots(service, start, end, locationId = state.locationI
       p_start: start,
       p_end: end
     };
-    const bufferedResult = await db.rpc('get_public_minuta_available_slots_v101', parameters);
+    const bufferedResult = await availabilityRpc('get_public_minuta_available_slots_v101', parameters, signal);
     if (!isMissingRpc(bufferedResult.error, 'get_public_minuta_available_slots_v101')) return bufferedResult;
     if (state.groupBookingSafety) {
-      const safeResult = await db.rpc('get_public_minuta_available_slots_group_safe', parameters);
+      const safeResult = await availabilityRpc('get_public_minuta_available_slots_group_safe', parameters, signal);
       if (!isMissingRpc(safeResult.error, 'get_public_minuta_available_slots_group_safe')) return safeResult;
       state.groupBookingSafety = false;
     }
     if (state.branchShiftScheduling) {
-      const result = await db.rpc('get_public_minuta_available_slots_v4', parameters);
+      const result = await availabilityRpc('get_public_minuta_available_slots_v4', parameters, signal);
       if (!isMissingRpc(result.error, 'get_public_minuta_available_slots_v4')) return result;
       state.branchShiftScheduling = false;
     }
-    return db.rpc('get_public_minuta_available_slots_v3', parameters);
+    return availabilityRpc('get_public_minuta_available_slots_v3', parameters, signal);
   }
   const parameters = { p_service:service.id, p_start:start, p_end:end, p_ignore_booking:null };
-  const bufferedResult = await db.rpc('get_available_slots_v101', parameters);
+  const bufferedResult = await availabilityRpc('get_available_slots_v101', parameters, signal);
   if (!isMissingRpc(bufferedResult.error, 'get_available_slots_v101')) return bufferedResult;
-  return db.rpc('get_available_slots', parameters);
+  return availabilityRpc('get_available_slots', parameters, signal);
 }
 
 function renderLocations() {
@@ -981,6 +987,12 @@ async function loadAvailability() {
   const service = selectedService();
   const requestedLocationId = state.locationId;
   const revision = ++availabilityLoadRevision;
+  const isCurrent = () => revision === availabilityLoadRevision
+    && selectedService()?.id === service?.id && state.locationId === requestedLocationId;
+  const controller = typeof AbortController === 'function' ? new AbortController() : null;
+  let timeoutId = null;
+  let data = [];
+  let error = null;
   state.availability = new Map();
   state.availabilityServiceId = '';
   state.availabilityLocationId = '';
@@ -992,29 +1004,51 @@ async function loadAvailability() {
   renderDates();
   renderTimes();
   if (!service) { state.loadingAvailability = false; renderTimes(); return; }
-  const { data, error } = await loadPublicSlots(service, dates[0].iso, dates[dates.length - 1].iso, requestedLocationId);
-  if (revision !== availabilityLoadRevision || selectedService()?.id !== service.id || state.locationId !== requestedLocationId) return;
-  dates.forEach(item => state.availability.set(item.iso, []));
-  if (!error) (data || []).forEach(item => {
-    const date = item.booking_date;
-    const time = String(item.booking_time).slice(0, 5);
-    state.availability.set(date, [...(state.availability.get(date) || []), time]);
-  });
-  state.availabilityError = Boolean(error);
-  if (!error) {
-    state.availabilityServiceId = service.id;
-    state.availabilityLocationId = requestedLocationId;
-  }
-  state.loadingAvailability = false;
-  renderDates();
-  renderTimes();
-  if (error) {
-    setBookingStatus(navigator.onLine ? 'error' : 'offline', navigator.onLine ? 'Расписание временно недоступно' : 'Нет соединения с интернетом');
-    $('#noTimes').textContent = 'Не удалось загрузить расписание. Обновите страницу.';
-    $('#noTimes').hidden = false;
-  } else {
-    setBookingStatus('open', 'Запись открыта');
-    $('#noTimes').textContent = 'На эту дату свободного времени нет. Выберите другой день.';
+  try {
+    const timeout = new Promise((_, reject) => {
+      timeoutId = setTimeout(() => {
+        controller?.abort();
+        const timeoutError = new Error('availability_timeout');
+        timeoutError.name = 'TimeoutError';
+        reject(timeoutError);
+      }, AVAILABILITY_REQUEST_TIMEOUT_MS);
+    });
+    ({ data, error } = await Promise.race([
+      loadPublicSlots(service, dates[0].iso, dates[dates.length - 1].iso, requestedLocationId, controller?.signal),
+      timeout
+    ]));
+    if (!isCurrent()) return;
+    dates.forEach(item => state.availability.set(item.iso, []));
+    if (!error) (data || []).forEach(item => {
+      const date = item.booking_date;
+      const time = String(item.booking_time).slice(0, 5);
+      state.availability.set(date, [...(state.availability.get(date) || []), time]);
+    });
+    if (!error) {
+      state.availabilityServiceId = service.id;
+      state.availabilityLocationId = requestedLocationId;
+    }
+  } catch (requestError) {
+    error = requestError || new Error('availability_request_failed');
+    if (!isCurrent()) return;
+    dates.forEach(item => state.availability.set(item.iso, []));
+  } finally {
+    if (timeoutId !== null) clearTimeout(timeoutId);
+    if (!isCurrent()) return;
+    state.availabilityError = Boolean(error);
+    state.loadingAvailability = false;
+    renderDates();
+    renderTimes();
+    if (error) {
+      const online = navigator.onLine;
+      const timedOut = error?.name === 'TimeoutError';
+      setBookingStatus(online ? 'error' : 'offline', online ? 'Расписание временно недоступно' : 'Нет соединения с интернетом');
+      $('#noTimes').innerHTML = `<span>${timedOut ? 'Расписание загружается дольше обычного.' : 'Не удалось загрузить расписание.'}</span><button class="service-details-button" type="button" id="retryAvailability">Повторить</button>`;
+      $('#noTimes').hidden = false;
+    } else {
+      setBookingStatus('open', 'Запись открыта');
+      $('#noTimes').textContent = 'На эту дату свободного времени нет. Выберите другой день.';
+    }
   }
 }
 
@@ -1545,6 +1579,7 @@ document.addEventListener('click', event => {
   const next = event.target.closest('[data-next]');
   const back = event.target.closest('[data-back]');
   const retryServices = event.target.closest('#retryServices');
+  const retryAvailability = event.target.closest('#retryAvailability');
   const openWaitlist = event.target.closest('#openWaitlist');
   const closeWaitlist = event.target.closest('[data-close-waitlist]');
   const paymentLink = event.target.closest('#successPaymentLink[data-payment-token]');
@@ -1604,6 +1639,7 @@ document.addEventListener('click', event => {
   if (next) showStep(Number(next.dataset.next));
   if (back) showStep(Number(back.dataset.back));
   if (retryServices) loadServices();
+  if (retryAvailability && state.step === 2 && state.serviceId && !state.loadingAvailability) void loadAvailability();
   if (openWaitlist) openWaitlistDialog();
   if (closeWaitlist) $('#waitlistDialog').close();
 });
