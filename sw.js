@@ -1,9 +1,10 @@
 const CACHE_PREFIX = 'primetime-client-';
-const CACHE = `${CACHE_PREFIX}v4`;
+const CACHE = `${CACHE_PREFIX}v5`;
 
 const CORE_ASSETS = [
   './',
   './index.html',
+  './catalog-router.js?v=5',
   './offline.html',
   './offline.js',
   './manifest.webmanifest',
@@ -15,7 +16,7 @@ const CORE_ASSETS = [
   './vendor/supabase-2.112.4.min.js',
   './config.js?v=811',
   './theme-catalog.js?v=811',
-  './site-update.js?v=4',
+  './site-update.js?v=5',
   './reliability.js?v=811',
   './group-bookings.js?v=811',
   './booking-widgets.js?v=811',

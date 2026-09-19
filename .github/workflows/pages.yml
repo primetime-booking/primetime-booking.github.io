@@ -25,11 +25,13 @@ jobs:
       - name: Check client source
         run: |
           node --check app.js
+          node --check catalog-router.js
           node --check booking.js
           node --check my-bookings.js
           node --check waitlist.js
           node --check sw.js
           node tests/client-pages-static-test.mjs
+          node tests/catalog-root-router-test.mjs
           node availability-loading-recovery-test.mjs
           node tests/availability-compact-v165-test.mjs
           node public-booking-flow-test.mjs
