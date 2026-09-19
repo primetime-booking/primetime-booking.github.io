@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#183427">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' https://cawexmmrqjvothcbgjxr.supabase.co wss://cawexmmrqjvothcbgjxr.supabase.co; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self'; upgrade-insecure-requests">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Лист ожидания — Массаж в Ижевске</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css?v=811">
+  <link rel="stylesheet" href="client-themes.css?v=811">
+</head>
+<body class="manage-body booking-client-page" data-client-theme="sage">
+  <div class="ambient ambient-left"></div><div class="ambient ambient-right"></div>
+  <header class="site-header manage-header"><a class="brand" href="index.html"><span class="brand-mark">М</span><span><strong>Массаж в Ижевске</strong><small>лист ожидания</small></span></a><a class="provider-link" href="index.html"><span>Онлайн-запись</span></a></header>
+  <main class="manage-layout"><section class="manage-card">
+    <div class="loading-state manage-loading" id="waitlistManageLoading"><i></i><span>Загружаем заявку…</span></div>
+    <div class="manage-error" id="waitlistManageError" hidden><span>!</span><h1>Заявка не найдена</h1><p>Проверьте ссылку или выберите свободное время заново.</p><div class="manage-error-actions"><a class="primary" href="index.html">Проверить свободное время</a><a class="manage-secondary" href="my-bookings.html">Открыть мои записи</a></div></div>
+    <div id="waitlistManageContent" hidden>
+      <div class="manage-title"><div><small>Лист ожидания</small><h1 id="waitlistManageService">Услуга</h1></div><span class="manage-status" id="waitlistManageStatus">Ожидает</span></div>
+      <div class="manage-appointment"><div class="manage-date-mark"><strong id="waitlistManageDay">—</strong><span id="waitlistManageMonth">—</span></div><div><strong id="waitlistManageDate">—</strong><span id="waitlistManagePeriod">—</span></div></div>
+      <dl class="manage-details"><div><dt>Исполнитель</dt><dd id="waitlistManagePerformer">—</dd></div><div><dt>Номер заявки</dt><dd id="waitlistManageCode">—</dd></div></dl>
+      <p class="manage-policy">Мастер свяжется с вами, когда появится подходящее окно. Заявка не является гарантированной записью.</p>
+      <div class="manage-actions" id="waitlistManageActions"><a class="primary" href="index.html">Проверить свободное время</a><button class="manage-danger" id="cancelWaitlist" type="button">Отменить заявку</button></div>
+    </div>
+  </section></main>
+  <div class="toast" id="toast" hidden></div>
+  <script src="vendor/supabase-2.112.4.min.js" integrity="sha384-yiVMs0R/Jyz7OhoXa/DsEMUSBLjEhr/QJta2ONO+zB6I8/GmNg/7AUFrZmAJV7KV"></script>
+  <script src="config.js?v=811"></script><script src="site-update.js?v=817" defer></script><script src="theme-catalog.js?v=811"></script><script src="waitlist.js?v=811" defer></script>
+</body>
+</html>

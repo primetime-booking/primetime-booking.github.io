@@ -1,0 +1,14 @@
+{
+  "name": "PrimeTime — онлайн-запись",
+  "short_name": "PrimeTime",
+  "description": "Клиентская онлайн-запись PrimeTime",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7faf7",
+  "theme_color": "#183427",
+  "lang": "ru",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

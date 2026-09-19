@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#183427">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://telegram.org; connect-src 'self' https://cawexmmrqjvothcbgjxr.supabase.co wss://cawexmmrqjvothcbgjxr.supabase.co https://oauth.telegram.org; frame-src https://oauth.telegram.org; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+  <meta name="description" content="Онлайн-запись на массаж в Ижевске.">
+  <meta property="og:title" content="Массаж в Ижевске — онлайн-запись">
+  <meta property="og:description" content="Выберите массаж и свободное время онлайн.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://primetime-booking.github.io/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Массаж в Ижевске — онлайн-запись">
+  <meta name="twitter:description" content="Выберите массаж и свободное время онлайн.">
+  <meta name="twitter:image" content="https://primetime-booking.github.io/og.png">
+  <title>Массаж в Ижевске — онлайн-запись</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css?v=811">
+  <link rel="stylesheet" href="client-themes.css?v=811">
+  <link rel="stylesheet" href="code-scanner.css?v=811">
+  <script src="booking-widgets.js?v=811"></script>
+</head>
+<body class="booking-client-page" data-client-theme="sage">
+  <div class="ambient ambient-left"></div><div class="ambient ambient-right"></div>
+  <header class="site-header booking-client-header">
+    <a class="brand" href="#top" aria-label="Массаж в Ижевске — на главную"><span class="brand-mark">М</span><span><strong>Массаж в Ижевске</strong><small>Рамиль · массажист</small></span></a>
+    <div class="client-header-actions"><button class="client-theme-button" id="openClientTheme" type="button" aria-haspopup="dialog" aria-controls="clientThemeDialog" title="Поменять оформление"><svg class="ui-icon" aria-hidden="true"><use href="ui-icons.svg#icon-spark"/></svg><span id="clientThemeButtonLabel">Оформление</span></button><a class="client-bookings-link" href="my-bookings.html"><svg class="ui-icon" aria-hidden="true"><use href="ui-icons.svg#icon-calendar"/></svg><span>Мои записи</span></a></div>
+  </header>
+
+  <main id="top" class="layout booking-client-layout">
+    <section class="client-hero" aria-labelledby="clientHeroTitle">
+      <small>Онлайн-запись</small>
+      <h1 id="clientHeroTitle">Массаж в удобное время.</h1>
+      <p>Выберите услугу — свободное время покажем сразу.</p>
+    </section>
+    <section class="booking-card" aria-labelledby="bookingTitle">
+      <div id="bookingFlow">
+        <div class="repeat-booking-notice" id="repeatBookingNotice" role="status" hidden></div>
+        <div class="booking-context-row"><span class="status status-checking" id="bookingStatus" role="status" aria-live="polite"><i></i><span>Проверяем расписание…</span></span><span class="booking-address">Карла Маркса, 304б · 10:00–20:00</span></div>
+        <div class="card-heading"><div><small id="stepKicker">Услуга</small><h2 id="bookingTitle">Выберите услугу</h2></div><span class="step-label" id="stepLabel">1 из 3</span></div>
+        <div class="progress" aria-hidden="true"><i class="active"></i><i></i><i></i></div>
+        <div class="progress-labels" aria-label="Этапы записи"><span class="active" data-progress-label="1">Услуга</span><span data-progress-label="2">Время</span><span data-progress-label="3">Контакты</span></div>
+        <div class="step active" data-step="1">
+          <label class="location-filter" id="locationFilter" hidden><span>Филиал</span><select id="locationSelect" aria-label="Выберите филиал"></select></label>
+          <section class="specialist-filter" id="specialistFilter" aria-labelledby="specialistFilterTitle" hidden>
+            <div><small>Команда</small><h3 id="specialistFilterTitle">Выберите специалиста</h3></div>
+            <div class="specialist-filter-list" id="specialists" role="group" aria-label="Специалисты"></div>
+          </section>
+          <div class="option-list" id="services"></div>
+          <button class="service-details-button" id="serviceDetailsButton" type="button" hidden><svg class="ui-icon" aria-hidden="true"><use href="ui-icons.svg#icon-info"/></svg><span>Подробнее об услуге</span></button>
+          <button class="primary next" id="toDate" type="button" data-next="2" disabled hidden><span>Выбрать время</span><svg class="ui-icon" aria-hidden="true"><use href="ui-icons.svg#icon-arrow-right"/></svg></button>
+        </div>
+        <div class="step" data-step="2">
+          <h3><svg class="ui-icon section-icon" aria-hidden="true"><use href="ui-icons.svg#icon-calendar"/></svg> Дата</h3><div class="date-grid" id="dates"></div><button class="more-dates-button" id="moreDates" type="button"><span>Показать следующие даты</span><svg class="ui-icon" aria-hidden="true"><use href="ui-icons.svg#icon-arrow-right"/></svg></button>
+          <h3 class="section-gap"><svg class="ui-icon section-icon" aria-hidden="true"><use href="ui-icons.svg#icon-clock"/></svg> Свободное время <small>по Самаре (UTC+4)</small></h3>
+          <p class="duration-note" id="durationNote"></p>
+          <div class="time-periods" id="timePeriods" aria-label="Период дня" hidden></div>
+          <div class="time-hour-grid" id="timeHours" aria-label="Выберите час"></div>
+          <details class="minute-picker" id="minutePicker" hidden><summary><span>Другое время</span><strong>с шагом 5 минут</strong></summary><div class="minute-groups" id="times"></div></details>
+          <p class="no-times" id="noTimes" hidden>На эту дату всё занято. Выберите другой день.</p>
+          <div class="availability-suggestion" id="availabilityHint" hidden></div>
+          <div class="waitlist-cta" id="waitlistCta" hidden><div><strong>Не подходит время?</strong><span>Оставьте заявку — мастер увидит удобную дату и свяжется, когда появится окно.</span></div><button class="secondary-button" id="openWaitlist" type="button">Встать в лист ожидания</button></div>
+          <div class="actions"><button class="back" type="button" data-back="1" aria-label="Вернуться к услугам"><svg class="ui-icon" aria-hidden="true"><use href="ui-icons.svg#icon-arrow-left"/></svg><span>Услуги</span></button><button class="primary" id="continueBooking" type="button" data-next="3" hidden><span>Ввести контакты</span><svg class="ui-icon" aria-hidden="true"><use href="ui-icons.svg#icon-arrow-right"/></svg></button></div>
+        </div>
+        <form class="step" data-step="3" id="bookingForm" novalidate>
+          <div class="summary" id="summary"></div>
+          <label>Ваше имя<input id="clientName" name="name" autocomplete="name" placeholder="Например, Елена" maxlength="80" required></label>
+          <label>Номер телефона<input id="clientPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" maxlength="18" pattern="\+7 \([0-9]{3}\) [0-9]{3}-[0-9]{2}-[0-9]{2}" aria-describedby="phoneHint" required></label>
+          <small class="input-hint" id="phoneHint">Введите 10 цифр после +7</small>
+          <details class="booking-benefit">
+            <summary>У меня есть сертификат или абонемент</summary>
+            <div class="scan-field"><label>Код<input id="bookingBenefitCode" name="benefit_code" autocomplete="off" maxlength="40" placeholder="Введите код"></label><button class="secondary-button" type="button" data-code-scan-target="bookingBenefitCode" data-code-scan-mode="benefit" data-code-scan-title="Сертификат или абонемент">Сканировать</button></div>
+            <small class="input-hint">Код проверится при подтверждении записи.</small>
+          </details>
+          <label class="consent-check" data-legal-version="2026-09-05"><input id="dataConsent" type="checkbox" required><span>Я принимаю <a href="terms.html" target="_blank" rel="noopener">условия использования</a> и соглашаюсь на обработку данных по <a href="privacy.html" target="_blank" rel="noopener">политике конфиденциальности</a>.</span></label>
+          <p class="form-error" id="formError" role="alert" hidden></p>
+          <div class="actions"><button class="back" type="button" data-back="2" aria-label="Вернуться к выбору времени"><svg class="ui-icon" aria-hidden="true"><use href="ui-icons.svg#icon-arrow-left"/></svg><span>Время</span></button><button class="primary" id="submitBooking" type="submit" disabled><svg class="ui-icon" aria-hidden="true"><use href="ui-icons.svg#icon-check"/></svg><span>Подтвердить запись</span></button></div>
+        </form>
+      </div>
+      <div class="success" id="success" hidden aria-live="polite">
+        <span class="success-mark"><svg class="ui-icon" aria-hidden="true"><use href="ui-icons.svg#icon-check"/></svg></span><small>Запись создана</small><h2 id="successTitle">Готово!</h2>
+        <div class="success-appointment"><p id="successDetails"></p><p class="local-note">Мастер уже видит запись в своём кабинете.</p></div>
+        <div class="success-payment" id="successPayment" hidden>
+          <small>Для подтверждения времени</small>
+          <strong id="successDeposit"></strong>
+          <a class="primary" id="successPaymentLink" href="#" target="_blank" rel="noopener noreferrer">Внести предоплату</a>
+          <p>После оплаты сохраните чек. Исполнитель отметит поступление в кабинете.</p>
+        </div>
+        <button class="telegram-connect-button" id="telegramConnect" type="button" aria-pressed="false" hidden disabled><span class="telegram-connect-mark" aria-hidden="true"><svg class="ui-icon"><use href="ui-icons.svg#icon-telegram"/></svg></span><span><strong data-telegram-auth-title>Подключить Telegram</strong><small data-telegram-auth-note>Разрешите уведомления один раз — запускать бота не нужно</small></span><svg class="ui-icon telegram-connect-arrow" aria-hidden="true"><use href="ui-icons.svg#icon-arrow-right"/></svg></button>
+        <p class="telegram-connect-skip">Можно пропустить — запись всё равно сохранена.</p>
+        <section class="client-access-result" id="clientAccessResult" hidden><small>Доступ к записям</small><strong id="clientAccessCode"></strong><p id="clientAccessNote"></p><div class="client-access-share" id="clientAccessShare" hidden><button id="clientAccessDownload" type="button">Сохранить код в файл</button><a id="clientAccessWhatsapp" href="#" target="_blank" rel="noopener noreferrer">Отправить в WhatsApp</a><a id="clientAccessTelegram" href="#" target="_blank" rel="noopener noreferrer">Отправить в Telegram</a></div></section>
+        <div class="success-actions"><button class="primary manage-booking-link" id="saveSuccessCalendar" type="button"><svg class="ui-icon" aria-hidden="true"><use href="ui-icons.svg#icon-calendar"/></svg><span>Сохранить в календарь</span></button><a class="primary manage-booking-link" id="myBookingsSuccess" href="my-bookings.html" hidden>Все мои записи</a><a class="success-manage-link manage-booking-link" id="manageBooking" href="booking.html" hidden><span>Управлять записью</span><svg class="ui-icon" aria-hidden="true"><use href="ui-icons.svg#icon-arrow-right"/></svg></a><button class="manage-secondary" type="button" id="newBooking">Создать ещё запись</button></div>
+      </div>
+    </section>
+  </main>
+  <section class="public-group-events" id="publicGroupEvents" aria-labelledby="publicGroupEventsTitle" hidden>
+    <div class="public-group-events-heading"><div><small>Запись по местам</small><h2 id="publicGroupEventsTitle">Групповые события</h2></div><p>Выберите событие и оставьте мастеру комментарий перед посещением.</p></div>
+    <div class="public-group-events-list" id="publicGroupEventsList"></div>
+  </section>
+  <dialog class="calendar-dialog" id="calendarDialog" aria-labelledby="calendarDialogTitle">
+    <button class="calendar-dialog-close" id="closeCalendarDialog" type="button" aria-label="Закрыть"><svg class="ui-icon" aria-hidden="true"><use href="ui-icons.svg#icon-close"/></svg></button>
+    <small>Напоминание о записи</small><h2 id="calendarDialogTitle">Куда добавить?</h2>
+    <p>Выберите календарь на вашем телефоне.</p>
+    <div class="calendar-options">
+      <button class="calendar-option" id="addAppleCalendar" type="button"><strong>iPhone / iPad</strong><span>Открыть событие в календаре устройства</span></button>
+      <a class="calendar-option" id="addAndroidCalendar" href="#"><strong>Android</strong><span>Открыть запись в установленном календаре</span></a>
+    </div>
+  </dialog>
+  <section class="public-portfolio" id="portfolioSection" aria-labelledby="portfolioTitle" hidden>
+    <div class="public-portfolio-heading"><div><small>Результаты работы</small><h2 id="portfolioTitle">Портфолио</h2></div><p>Количество сеансов указано мастером для каждого результата.</p></div>
+    <div class="public-portfolio-list" id="publicPortfolioList"></div>
+  </section>
+  <section class="public-reviews" id="reviewsSection" aria-labelledby="reviewsTitle" hidden>
+    <div class="public-reviews-heading"><div><small>Отзывы клиентов</small><h2 id="reviewsTitle">После реальных визитов</h2></div><div class="reviews-summary"><strong id="reviewsAverage">0,0</strong><span aria-hidden="true">★</span><small id="reviewsCount">0 отзывов</small></div></div>
+    <div class="public-reviews-list" id="publicReviewsList"></div>
+  </section>
+  <section class="booking-faq" aria-labelledby="bookingFaqTitle">
+    <div class="booking-faq-heading">
+      <small><span aria-hidden="true"></span> Полезно знать</small>
+      <h2 id="bookingFaqTitle">Частые вопросы</h2>
+    </div>
+    <div class="booking-faq-list">
+      <details name="booking-faq">
+        <summary><span>Нужно ли устанавливать приложение?</span><i aria-hidden="true"></i></summary>
+        <p>Устанавливать приложение необязательно: записаться можно прямо на сайте. При желании сайт можно установить на телефон как приложение для быстрого доступа к записям и уведомлениям.</p>
+      </details>
+      <details name="booking-faq">
+        <summary><span>Можно ли перенести или удалить запись?</span><i aria-hidden="true"></i></summary>
+        <p>Да. Откройте личную ссылку из подтверждения и выберите доступное действие. Чем раньше вы сообщите об изменении планов, тем проще подобрать другое время.</p>
+      </details>
+      <details name="booking-faq">
+        <summary><span>Как я получу напоминание?</span><i aria-hidden="true"></i></summary>
+        <p>После записи можно подключить уведомления в Telegram. В напоминании будут дата, время, услуга и адрес визита.</p>
+      </details>
+      <details name="booking-faq">
+        <summary><span>Как уточнить детали или способ оплаты?</span><i aria-hidden="true"></i></summary>
+        <p>Свяжитесь с мастером по контактам в подтверждении записи. Так можно заранее обсудить оплату, противопоказания и любые индивидуальные пожелания.</p>
+      </details>
+    </div>
+  </section>
+  <footer class="booking-footer"><a href="https://aladushka9180-droid.github.io/anatomy-trainer/minuta-online-booking/help/index.html">Помощь</a><a href="https://aladushka9180-droid.github.io/anatomy-trainer/minuta-online-booking/provider.html">Вход для исполнителя</a></footer>
+  <dialog class="service-details-dialog service-card-dialog" id="serviceDetailsDialog" aria-labelledby="serviceDetailsTitle">
+    <div class="service-card-scroll">
+      <button class="dialog-close" type="button" data-close-service-details aria-label="Закрыть"><svg class="ui-icon" aria-hidden="true"><use href="ui-icons.svg#icon-close"></use></svg></button>
+      <figure class="service-details-media" id="serviceDetailsMedia" hidden><img id="serviceDetailsImage" alt="" loading="lazy" decoding="async"></figure>
+      <div class="service-card-copy">
+        <small>Об услуге</small><h2 id="serviceDetailsTitle">Услуга</h2>
+        <div class="service-details-meta"><span id="serviceDetailsDuration"></span><strong id="serviceDetailsPrice"></strong></div>
+        <p id="serviceDetailsText" hidden></p>
+        <ul class="service-details-highlights" id="serviceDetailsHighlights" hidden></ul>
+        <section class="service-details-review" id="serviceDetailsReview" hidden aria-labelledby="serviceDetailsReviewTitle">
+          <div class="service-details-review-head"><h3 id="serviceDetailsReviewTitle">Отзывы</h3><strong id="serviceDetailsRating"></strong></div>
+          <blockquote id="serviceDetailsLatestReview"></blockquote>
+          <button type="button" data-open-service-reviews>Все отзывы</button>
+        </section>
+        <details class="service-details-important" id="serviceDetailsImportant" hidden><summary>Важно</summary><p id="serviceDetailsImportantText"></p></details>
+      </div>
+    </div>
+    <div class="service-card-action"><button class="primary" type="button" data-choose-service-details><span>Выбрать услугу</span><svg class="ui-icon" aria-hidden="true"><use href="ui-icons.svg#icon-check"></use></svg></button></div>
+  </dialog>
+  <dialog class="service-details-dialog service-reviews-dialog" id="serviceReviewsDialog" aria-labelledby="serviceReviewsTitle">
+    <button class="dialog-close" type="button" data-close-service-reviews aria-label="Закрыть"><svg class="ui-icon" aria-hidden="true"><use href="ui-icons.svg#icon-close"></use></svg></button>
+    <small>Отзывы об услуге</small><h2 id="serviceReviewsTitle">Отзывы</h2>
+    <div class="service-reviews-summary" id="serviceReviewsSummary"></div>
+    <div class="service-reviews-list" id="serviceReviewsList"></div>
+  </dialog>
+  <dialog class="service-details-dialog public-group-booking-dialog" id="publicGroupBookingDialog" aria-labelledby="publicGroupBookingTitle">
+    <button class="dialog-close" id="closePublicGroupBooking" type="button" aria-label="Закрыть"><svg class="ui-icon" aria-hidden="true"><use href="ui-icons.svg#icon-close"></use></svg></button>
+    <small>Групповое событие</small><h2 id="publicGroupBookingTitle">Запись на событие</h2>
+    <p id="publicGroupBookingSummary"></p>
+    <form id="publicGroupBookingForm" class="public-group-booking-form" novalidate>
+      <label>Ваше имя<input id="publicGroupClientName" autocomplete="name" maxlength="80" required></label>
+      <label>Номер телефона<input id="publicGroupClientPhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="30" placeholder="+7 (___) ___-__-__" required></label>
+      <label>Комментарий мастеру<textarea id="publicGroupClientComment" maxlength="700" rows="3" placeholder="Например, ограничения по здоровью или важный вопрос"></textarea></label>
+      <label class="consent-check"><input id="publicGroupConsent" type="checkbox" required><span>Я согласен(на) на обработку имени, телефона и комментария для участия в событии.</span></label>
+      <p class="form-error" id="publicGroupBookingError" role="alert" hidden></p>
+      <button class="primary" type="submit">Подтвердить участие</button>
+    </form>
+    <div class="public-group-booking-success" id="publicGroupBookingSuccess" aria-live="polite" hidden></div>
+  </dialog>
+  <dialog class="waitlist-dialog" id="waitlistDialog" aria-labelledby="waitlistTitle">
+    <button class="dialog-close" type="button" data-close-waitlist aria-label="Закрыть"><svg class="ui-icon" aria-hidden="true"><use href="ui-icons.svg#icon-close"/></svg></button>
+    <div id="waitlistFormContent">
+      <small>Лист ожидания</small><h2 id="waitlistTitle">Оставьте удобное время</h2>
+      <p class="waitlist-context"><strong id="waitlistService">Услуга</strong><span id="waitlistDate">Дата</span></p>
+      <form id="waitlistForm" novalidate>
+        <label>Ваше имя<input id="waitlistName" autocomplete="name" maxlength="80" placeholder="Например, Елена" required></label>
+        <label>Номер телефона<input id="waitlistPhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="18" placeholder="+7 (___) ___-__-__" required></label>
+        <label>Удобное время<select id="waitlistPeriod"><option value="any">Любое время</option><option value="morning">Утро, 10:00–12:00</option><option value="day">День, 12:00–17:00</option><option value="evening">Вечер, 17:00–20:00</option></select></label>
+        <label class="consent-check"><input id="waitlistConsent" type="checkbox" required><span>Я согласен(на) на обработку имени и телефона для листа ожидания.</span></label>
+        <p class="form-error" id="waitlistError" role="alert" hidden></p>
+        <button class="primary" id="submitWaitlist" type="submit">Оставить заявку</button>
+      </form>
+    </div>
+    <div class="waitlist-success" id="waitlistSuccess" hidden aria-live="polite"><span class="success-mark"><svg class="ui-icon"><use href="ui-icons.svg#icon-check"/></svg></span><small>Заявка принята</small><h2>Вы в листе ожидания</h2><p id="waitlistSuccessText"></p><a class="primary" id="waitlistManageLink" href="waitlist.html">Управлять заявкой</a></div>
+  </dialog>
+  <dialog class="code-scanner-dialog" id="codeScannerDialog" aria-labelledby="codeScannerTitle"><div class="code-scanner-shell"><div class="code-scanner-head"><div><small>Камера устройства</small><h2 id="codeScannerTitle">Сканировать код</h2></div><button type="button" data-close-code-scanner aria-label="Закрыть">×</button></div><div class="code-scanner-camera"><video id="codeScannerVideo" playsinline muted></video></div><p class="code-scanner-status" id="codeScannerStatus" role="status" aria-live="polite"></p><form class="code-scanner-manual" id="codeScannerManualForm"><label>Или введите код<input id="codeScannerManual" inputmode="text" autocomplete="off" maxlength="160"></label><button class="primary" type="submit">Применить</button></form></div></dialog>
+  <dialog class="client-theme-dialog" id="clientThemeDialog" aria-labelledby="clientThemeTitle"><form class="client-theme-dialog-form" method="dialog"><div class="client-theme-dialog-head"><div><small>Только на этом устройстве</small><h2 id="clientThemeTitle">Выберите оформление</h2></div><button class="client-theme-dialog-close" type="submit" value="close" aria-label="Закрыть">×</button></div><div class="client-theme-options" id="clientThemeOptions"></div><div class="client-theme-dialog-foot"><small>Выбор сохраняется отдельно для каждой организации и не влияет на запись.</small><button class="primary" type="submit" value="close">Закрыть</button></div></form></dialog>
+  <script src="vendor/supabase-2.112.4.min.js" integrity="sha384-yiVMs0R/Jyz7OhoXa/DsEMUSBLjEhr/QJta2ONO+zB6I8/GmNg/7AUFrZmAJV7KV"></script>
+  <script src="config.js?v=811"></script><script src="theme-catalog.js?v=811"></script><script src="site-update.js?v=817" defer></script><script src="reliability.js?v=811"></script><script src="group-bookings.js?v=811" defer></script><script src="telegram-auth.js?v=811" defer></script><script src="code-scanner.js?v=811" defer></script><script src="app.js?v=811" defer></script>
+</body>
+</html>

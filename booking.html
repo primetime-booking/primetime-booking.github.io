@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#183427">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://telegram.org; connect-src 'self' https://cawexmmrqjvothcbgjxr.supabase.co wss://cawexmmrqjvothcbgjxr.supabase.co https://oauth.telegram.org; frame-src https://oauth.telegram.org; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self'; upgrade-insecure-requests">
+  <meta name="description" content="Управление записью на массаж в Ижевске.">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Моя запись — Массаж в Ижевске</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css?v=811">
+  <link rel="stylesheet" href="client-themes.css?v=811">
+  <style>#manageRecovery{font-size:14px;line-height:1.5}#manageRecovery p{margin:0 0 12px}#manageRecovery button{min-height:44px}</style>
+</head>
+<body class="manage-body booking-client-page" data-client-theme="sage">
+  <div class="ambient ambient-left"></div><div class="ambient ambient-right"></div>
+  <header class="site-header manage-header">
+    <a class="brand" href="index.html"><span class="brand-mark">М</span><span><strong>Массаж в Ижевске</strong><small>моя запись</small></span></a>
+    <div class="manage-header-actions"><a class="provider-link" href="my-bookings.html" aria-label="Мои записи"><svg class="ui-icon" aria-hidden="true"><use href="ui-icons.svg#icon-calendar"></use></svg><span>Мои записи</span></a><a class="provider-link" href="index.html" aria-label="Новая запись"><svg class="ui-icon" aria-hidden="true"><use href="ui-icons.svg#icon-plus"></use></svg><span>Новая запись</span></a></div>
+  </header>
+  <main class="manage-layout">
+    <section class="manage-card">
+      <div class="loading-state manage-loading" id="manageLoading"><i></i><span>Загружаем запись…</span></div>
+      <div class="manage-error" id="manageError" hidden><span>!</span><h1 id="manageErrorTitle">Запись не найдена</h1><p id="manageErrorText">Проверьте полную ссылку из подтверждения или откройте «Мои записи». Не создавайте повторную запись для восстановления доступа.</p><div class="manage-error-actions"><button class="manage-secondary" id="retryManage" type="button" hidden>Повторить проверку</button><a class="primary" href="my-bookings.html">Открыть мои записи</a><a class="manage-secondary" href="index.html">Создать новую запись</a></div></div>
+      <div id="manageContent" hidden>
+        <div class="manage-title"><div><small>Ваша запись</small><h1 id="manageService">Услуга</h1></div><span class="manage-status" id="manageStatus">Новая</span></div>
+        <p class="manage-freshness" id="manageFreshness" aria-live="polite">Проверяем актуальность…</p>
+        <section id="manageRecovery" class="manage-policy" role="status" hidden><p id="manageRecoveryText"></p><button id="checkManageResult" class="manage-secondary" type="button">Проверить результат</button></section>
+        <div class="manage-appointment">
+          <div class="manage-date-mark"><strong id="manageDay">—</strong><span id="manageMonth">—</span></div>
+          <div><strong id="manageDate">—</strong><span id="manageTime">—</span></div>
+        </div>
+        <dl class="manage-details">
+          <div><dt>Исполнитель</dt><dd id="managePerformer">—</dd></div>
+          <div><dt>Длительность</dt><dd id="manageDuration">—</dd></div>
+          <div><dt>Стоимость</dt><dd id="managePrice">—</dd></div>
+        </dl>
+        <section class="manage-payment" id="managePayment" hidden>
+          <div><small>Предоплата</small><strong id="manageDeposit">—</strong></div>
+          <span id="managePaymentStatus">Ожидается</span>
+          <a class="primary" id="managePaymentLink" href="#" target="_blank" rel="noopener noreferrer">Перейти к оплате</a>
+          <p>После оплаты сохраните чек. Статус обновит исполнитель.</p>
+        </section>
+        <p class="manage-policy" id="managePolicy"></p>
+        <section class="attendance-confirmation" id="attendanceConfirmation" hidden><div><small>Подтвердите визит</small><strong>Вы придёте в назначенное время?</strong><span>Один ответ — и мастеру не нужно уточнять запись вручную.</span></div><button class="primary" id="confirmAttendance" type="button">Да, я приду</button></section>
+        <div class="manage-actions" id="manageActions">
+          <button class="primary" id="openReschedule" type="button">Перенести запись</button>
+          <button class="manage-secondary" id="addCalendar" type="button">Сохранить в календарь</button>
+          <button class="manage-danger" id="cancelBooking" type="button">Отменить запись</button>
+        </div>
+        <button class="telegram-connect-button manage-telegram-connect" id="manageTelegramConnect" type="button" aria-pressed="false" disabled><span class="telegram-connect-mark" aria-hidden="true"><svg class="ui-icon"><use href="ui-icons.svg#icon-telegram"></use></svg></span><span><strong data-telegram-auth-title>Подключить Telegram</strong><small data-telegram-auth-note>Разрешите уведомления один раз — запускать бота не нужно</small></span><svg class="ui-icon telegram-connect-arrow" aria-hidden="true"><use href="ui-icons.svg#icon-arrow-right"></use></svg></button>
+        <section class="reschedule-panel" id="reschedulePanel" hidden>
+          <div class="reschedule-head"><div><small>Перенос записи</small><h2>Выберите новое время</h2></div><button id="closeReschedule" type="button" aria-label="Закрыть"><svg class="ui-icon" aria-hidden="true"><use href="ui-icons.svg#icon-close"></use></svg></button></div>
+          <h3>Дата</h3><div class="date-grid manage-dates" id="manageDates"></div>
+          <h3>Свободное время</h3><div class="time-grid manage-times" id="manageTimes"></div>
+          <p class="no-times" id="manageNoTimes" hidden>На эту дату свободного времени нет.</p>
+          <p class="form-error" id="manageFormError" hidden></p>
+          <button class="primary" id="confirmReschedule" type="button" disabled>Сохранить новое время</button>
+        </section>
+        <details class="client-data-rights" id="clientDataRights"><summary>Мои данные и права</summary><p>Можно запросить копию данных, исправление, ограничение обработки или удаление.</p><div class="client-data-actions"><button type="button" data-client-data-request="export">Получить копию</button><button type="button" data-client-data-request="correction">Исправить данные</button><button type="button" data-client-data-request="restriction">Ограничить обработку</button><button type="button" data-client-data-request="erasure">Запросить удаление</button></div><p id="clientDataRequestStatus" class="manage-note" aria-live="polite"></p></details>
+        <p class="manage-note">Ссылка на эту страницу личная. Не отправляйте её посторонним.</p>
+      </div>
+    </section>
+  </main>
+  <dialog class="calendar-dialog" id="calendarDialog" aria-labelledby="calendarDialogTitle">
+    <button class="calendar-dialog-close" id="closeCalendarDialog" type="button" aria-label="Закрыть"><svg class="ui-icon" aria-hidden="true"><use href="ui-icons.svg#icon-close"></use></svg></button>
+    <small>Напоминание о записи</small><h2 id="calendarDialogTitle">Куда добавить?</h2>
+    <p>Выберите календарь на вашем телефоне.</p>
+    <div class="calendar-options">
+      <button class="calendar-option" id="addAppleCalendar" type="button"><strong>iPhone</strong><span>Открыть событие в календаре телефона</span></button>
+      <a class="calendar-option" id="addAndroidCalendar" href="#"><strong>Android</strong><span>Открыть запись в установленном календаре</span></a>
+    </div>
+  </dialog>
+  <div class="toast" id="toast" hidden></div>
+  <script src="vendor/supabase-2.112.4.min.js" integrity="sha384-yiVMs0R/Jyz7OhoXa/DsEMUSBLjEhr/QJta2ONO+zB6I8/GmNg/7AUFrZmAJV7KV"></script>
+  <script src="config.js?v=811"></script><script src="site-update.js?v=817" defer></script><script src="reliability.js?v=811"></script><script src="theme-catalog.js?v=811"></script><script src="telegram-auth.js?v=811" defer></script><script src="booking.js?v=811" defer></script>
+</body>
+</html>

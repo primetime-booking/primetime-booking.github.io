@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f7f1ea">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <title>Нет соединения — PrimeTime</title>
+  <style>
+    :root { color-scheme:light; font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif; background:#f7f1ea; color:#2d221d; }
+    * { box-sizing:border-box; }
+    body { min-height:100dvh; margin:0; display:grid; place-items:center; padding:24px; }
+    main { width:min(100%,430px); text-align:center; }
+    .mark { width:56px; height:56px; margin:0 auto 24px; display:grid; place-items:center; border-radius:18px; background:#bd6f4b; color:#fff; font-size:28px; font-weight:800; }
+    h1 { margin:0 0 12px; font-size:clamp(28px,8vw,38px); line-height:1.08; letter-spacing:-.03em; }
+    p { margin:0 auto 28px; max-width:34ch; color:#76665d; font-size:17px; line-height:1.5; }
+    button { width:100%; min-height:48px; display:flex; align-items:center; justify-content:center; border:0; border-radius:16px; background:#bd6f4b; color:#fff; font:750 17px/1 Inter,system-ui,-apple-system,"Segoe UI",sans-serif; cursor:pointer; }
+    small { display:block; margin-top:18px; color:#8a7a70; line-height:1.4; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="mark" aria-hidden="true">PT</div>
+    <h1>Нет соединения</h1>
+    <p>Проверьте интернет и попробуйте открыть страницу ещё раз.</p>
+    <button id="offlineRetry" type="button">Повторить</button>
+    <small>Уже открытые разделы могут быть доступны без интернета.</small>
+  </main>
+  <script src="offline.js"></script>
+</body>
+</html>
