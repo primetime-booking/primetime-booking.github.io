@@ -347,10 +347,12 @@ async function initializeSmsLogin() {
   const button = $('#clientSmsButton');
   const status = $('#clientSmsStatus');
   const intro = $('#clientLoginIntro');
+  const personalCodeRecovery = $('#legacyClientLogin');
   if (!window.MinutaPhoneAuth) {
     button.textContent = 'Вход по SMS недоступен';
-    intro.textContent = 'Вход по SMS пока недоступен. Используйте другой способ входа.';
+    intro.textContent = 'Вход по SMS пока недоступен. Восстановите доступ по личному коду.';
     status.hidden = true;
+    personalCodeRecovery.open = true;
     document.body.dataset.clientSms = 'disabled';
     return;
   }
@@ -360,7 +362,8 @@ async function initializeSmsLogin() {
   button.textContent = capability.enabled ? 'Получить код' : 'Вход по SMS пока не подключён';
   intro.textContent = capability.enabled
     ? 'Введите номер телефона — пришлём короткий код подтверждения.'
-    : capability.reason === 'offline' ? 'Для входа требуется интернет.' : 'Вход по SMS пока недоступен. Используйте другой способ входа.';
+    : capability.reason === 'offline' ? 'Для входа требуется интернет.' : 'Вход по SMS пока недоступен. Восстановите доступ по личному коду.';
+  personalCodeRecovery.open = !capability.enabled;
   status.hidden = !capability.enabled;
   status.textContent = capability.enabled
     ? 'Код действует ограниченное время. Никому его не сообщайте.'

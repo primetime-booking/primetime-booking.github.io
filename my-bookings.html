@@ -52,14 +52,14 @@
       </form>
       <p class="client-login-note" id="clientSmsStatus">Для входа по SMS требуется интернет.</p>
       <details class="legacy-client-login" id="legacyClientLogin">
-        <summary>Другой способ входа</summary>
+        <summary>Восстановить на другом устройстве</summary>
         <form id="clientLoginForm" novalidate>
           <label>Номер телефона<input id="clientLoginPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" maxlength="18" required></label>
           <label>Личный код<input id="clientLoginCode" type="text" inputmode="text" autocomplete="one-time-code" autocapitalize="characters" spellcheck="false" placeholder="XXXX-XXXX-XXXX-XXXX" maxlength="19" required></label>
           <p class="form-error" id="clientLoginError" role="alert" hidden></p>
           <button class="primary" id="clientLoginButton" type="submit">Открыть мои записи</button>
         </form>
-        <p class="client-login-note">Используйте личный код, только если вход по SMS недоступен.</p>
+        <p class="client-login-note">Введите номер и личный код из файла, сохранённого после записи. SMS не отправляется.</p>
       </details>
       <details class="client-access-help"><summary>Не получается войти?</summary><p>Личная ссылка из подтверждения открывает конкретную запись без кода.</p><p>Если ссылка и код потеряны, свяжитесь с исполнителем. Не создавайте повторную запись для восстановления.</p><a href="https://aladushka9180-droid.github.io/anatomy-trainer/minuta-online-booking/help/index.html">Помощь со входом</a></details>
       <div class="social-auth-buttons client-social-auth-buttons" aria-label="Другие способы входа">
@@ -91,6 +91,6 @@
   </dialog>
   <div class="toast" id="toast" hidden></div>
   <script src="vendor/supabase-2.112.4.min.js" integrity="sha384-yiVMs0R/Jyz7OhoXa/DsEMUSBLjEhr/QJta2ONO+zB6I8/GmNg/7AUFrZmAJV7KV"></script>
-  <script src="config.js?v=811"></script><script src="site-update.js?v=817" defer></script><script src="reliability.js?v=811"></script><script src="theme-catalog.js?v=811"></script><script src="phone-auth.js?v=811"></script><script src="social-auth.js?v=811"></script><script src="my-bookings.js?v=811" defer></script>
+  <script src="config.js?v=811"></script><script src="site-update.js?v=4" defer></script><script src="reliability.js?v=811"></script><script src="theme-catalog.js?v=811"></script><script src="phone-auth.js?v=811"></script><script src="social-auth.js?v=811"></script><script src="my-bookings.js?v=4" defer></script>
 </body>
 </html>

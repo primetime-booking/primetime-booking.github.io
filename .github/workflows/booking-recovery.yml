@@ -5,13 +5,19 @@ on:
     paths:
       - 'index.html'
       - 'group-bookings.js'
+      - 'my-bookings.html'
+      - 'my-bookings.js'
       - 'tests/group-bookings-recovery-browser-test.mjs'
+      - 'tests/client-device-recovery-browser-test.mjs'
       - '.github/workflows/booking-recovery.yml'
   pull_request:
     paths:
       - 'index.html'
       - 'group-bookings.js'
+      - 'my-bookings.html'
+      - 'my-bookings.js'
       - 'tests/group-bookings-recovery-browser-test.mjs'
+      - 'tests/client-device-recovery-browser-test.mjs'
       - '.github/workflows/booking-recovery.yml'
   workflow_dispatch:
 
@@ -34,4 +40,6 @@ jobs:
       - name: Verify public recovery paths
         env:
           PRIMETIME_PLAYWRIGHT_MODULE: ${{ runner.temp }}/primetime-recovery/node_modules/playwright/index.mjs
-        run: node tests/group-bookings-recovery-browser-test.mjs
+        run: |
+          node tests/group-bookings-recovery-browser-test.mjs
+          node tests/client-device-recovery-browser-test.mjs
