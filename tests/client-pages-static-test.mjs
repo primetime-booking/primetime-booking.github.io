@@ -17,7 +17,7 @@ assert.match(manifest.name, /PrimeTime/);
 
 const worker = read('sw.js');
 assert.match(worker, /CACHE_PREFIX = 'primetime-client-'/);
-assert.match(worker, /CACHE = `\$\{CACHE_PREFIX\}v2`/);
+assert.match(worker, /CACHE = `\$\{CACHE_PREFIX\}v3`/);
 assert.doesNotMatch(worker, /massage-izhevsk-/);
 for (const match of worker.matchAll(/'\.\/([^']+)'/g)) {
   const asset = match[1].split('?')[0];
@@ -28,7 +28,7 @@ for (const match of worker.matchAll(/'\.\/([^']+)'/g)) {
 const index = read('index.html');
 assert.match(index, /https:\/\/primetime-booking\.github\.io\/og\.png/);
 assert.doesNotMatch(index, /anatomy-trainer\/#\/home/);
-assert.match(read('site-update.js'), /\.\/sw\.js\?v=2/);
+assert.match(read('site-update.js'), /\.\/sw\.js\?v=3/);
 
 for (const file of ['index.html', 'booking.html', 'my-bookings.html', 'waitlist.html', 'messages.html', 'privacy.html', 'terms.html', '404.html']) {
   const html = read(file);

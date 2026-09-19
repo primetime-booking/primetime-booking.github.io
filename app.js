@@ -365,6 +365,14 @@ function visibleServices() {
   });
 }
 
+function expandCompactAvailabilityRows(rows) {
+  if (!Array.isArray(rows)) return [];
+  return rows.flatMap(item => (Array.isArray(item?.booking_times) ? item.booking_times : []).map(time => ({
+    booking_date:item.booking_date,
+    booking_time:time
+  })));
+}
+
 function availabilityRpc(name, parameters, signal) {
   const request = db.rpc(name, parameters);
   return signal && typeof request?.abortSignal === 'function' ? request.abortSignal(signal) : request;
@@ -379,6 +387,10 @@ async function loadPublicSlots(service, start, end, locationId = state.locationI
       p_start: start,
       p_end: end
     };
+    const compactResult = await availabilityRpc('get_public_minuta_available_slots_compact_v165', parameters, signal);
+    if (!isMissingRpc(compactResult.error, 'get_public_minuta_available_slots_compact_v165')) {
+      return compactResult.error ? compactResult : { ...compactResult, data:expandCompactAvailabilityRows(compactResult.data) };
+    }
     const bufferedResult = await availabilityRpc('get_public_minuta_available_slots_v101', parameters, signal);
     if (!isMissingRpc(bufferedResult.error, 'get_public_minuta_available_slots_v101')) return bufferedResult;
     if (state.groupBookingSafety) {
@@ -394,6 +406,10 @@ async function loadPublicSlots(service, start, end, locationId = state.locationI
     return availabilityRpc('get_public_minuta_available_slots_v3', parameters, signal);
   }
   const parameters = { p_service:service.id, p_start:start, p_end:end, p_ignore_booking:null };
+  const compactResult = await availabilityRpc('get_available_slots_compact_v165', parameters, signal);
+  if (!isMissingRpc(compactResult.error, 'get_available_slots_compact_v165')) {
+    return compactResult.error ? compactResult : { ...compactResult, data:expandCompactAvailabilityRows(compactResult.data) };
+  }
   const bufferedResult = await availabilityRpc('get_available_slots_v101', parameters, signal);
   if (!isMissingRpc(bufferedResult.error, 'get_available_slots_v101')) return bufferedResult;
   return availabilityRpc('get_available_slots', parameters, signal);

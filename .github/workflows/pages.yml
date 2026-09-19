@@ -31,7 +31,12 @@ jobs:
           node --check sw.js
           node tests/client-pages-static-test.mjs
           node availability-loading-recovery-test.mjs
+          node tests/availability-compact-v165-test.mjs
           node public-booking-flow-test.mjs
+      - name: Verify compact availability migration and rollback
+        run: |
+          npm install --prefix "$RUNNER_TEMP/v165-pglite" --no-save --ignore-scripts --no-audit --no-fund @electric-sql/pglite@0.5.8
+          MINUTA_PGLITE_MODULE="$RUNNER_TEMP/v165-pglite/node_modules/@electric-sql/pglite/dist/index.js" node tests/availability-compact-v165-pglite-test.mjs
 
   deploy:
     needs: verify
