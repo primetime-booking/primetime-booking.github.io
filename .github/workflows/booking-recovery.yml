@@ -1,0 +1,37 @@
+name: PrimeTime booking recovery regression
+
+on:
+  push:
+    paths:
+      - 'index.html'
+      - 'group-bookings.js'
+      - 'tests/group-bookings-recovery-browser-test.mjs'
+      - '.github/workflows/booking-recovery.yml'
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'group-bookings.js'
+      - 'tests/group-bookings-recovery-browser-test.mjs'
+      - '.github/workflows/booking-recovery.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Install isolated browser runtime
+        run: |
+          npm install --prefix "$RUNNER_TEMP/primetime-recovery" --ignore-scripts --no-save playwright@1.62.1
+          "$RUNNER_TEMP/primetime-recovery/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Verify public recovery paths
+        env:
+          PRIMETIME_PLAYWRIGHT_MODULE: ${{ runner.temp }}/primetime-recovery/node_modules/playwright/index.mjs
+        run: node tests/group-bookings-recovery-browser-test.mjs

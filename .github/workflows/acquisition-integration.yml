@@ -1,0 +1,39 @@
+name: PrimeTime acquisition integration
+
+on:
+  push:
+    paths:
+      - 'index.html'
+      - 'app.js'
+      - 'booking-widgets.js'
+      - 'tests/acquisition-browser-test.mjs'
+      - '.github/workflows/acquisition-integration.yml'
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'app.js'
+      - 'booking-widgets.js'
+      - 'tests/acquisition-browser-test.mjs'
+      - '.github/workflows/acquisition-integration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Install isolated browser runtime
+        run: |
+          npm install --prefix "$RUNNER_TEMP/primetime-acquisition" --ignore-scripts --no-save playwright@1.62.1
+          "$RUNNER_TEMP/primetime-acquisition/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Verify URL to RPC attribution
+        env:
+          PRIMETIME_PLAYWRIGHT_MODULE: ${{ runner.temp }}/primetime-acquisition/node_modules/playwright/index.mjs
+        run: node tests/acquisition-browser-test.mjs
