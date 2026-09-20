@@ -18,11 +18,11 @@ function route(pathname, search = '', hash = '', hostname = 'primetime-booking.g
 }
 
 const catalog = 'https://primetime-booking.primetime-booking-ru.workers.dev';
-assert.equal(route('/'), `${catalog}/`);
-assert.equal(route('/index.html', '', '#/home'), `${catalog}/`);
+assert.equal(route('/'), `${catalog}/r/ramil`);
+assert.equal(route('/index.html', '', '#/home'), `${catalog}/r/ramil`);
 assert.equal(
   route('/', '?utm_source=old&utm_campaign=launch&unknown=drop', '#/home'),
-  `${catalog}/?utm_source=old&utm_campaign=launch`
+  `${catalog}/r/ramil?utm_source=old&utm_campaign=launch`
 );
 assert.equal(route('/', '?org=minuta-example&service=service-id'), '');
 assert.equal(route('/', '?provider=provider-id'), '');

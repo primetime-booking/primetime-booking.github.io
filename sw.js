@@ -1,10 +1,10 @@
 const CACHE_PREFIX = 'primetime-client-';
-const CACHE = `${CACHE_PREFIX}v5`;
+const CACHE = `${CACHE_PREFIX}v6`;
 
 const CORE_ASSETS = [
   './',
   './index.html',
-  './catalog-router.js?v=5',
+  './catalog-router.js?v=6',
   './offline.html',
   './offline.js',
   './manifest.webmanifest',
@@ -16,7 +16,7 @@ const CORE_ASSETS = [
   './vendor/supabase-2.112.4.min.js',
   './config.js?v=811',
   './theme-catalog.js?v=811',
-  './site-update.js?v=5',
+  './site-update.js?v=6',
   './reliability.js?v=811',
   './group-bookings.js?v=811',
   './booking-widgets.js?v=811',
@@ -67,6 +67,19 @@ self.addEventListener('activate', event => {
       .filter(key => key.startsWith(CACHE_PREFIX) && key !== CACHE)
       .map(key => caches.delete(key)));
     await self.clients.claim();
+    const windows = await self.clients.matchAll({
+      type: 'window',
+      includeUncontrolled: true
+    });
+    await Promise.allSettled(windows.map(client => {
+      const url = new URL(client.url);
+      const isPlainRoot = url.origin === self.location.origin
+        && ['/', '/index.html'].includes(url.pathname)
+        && !url.search;
+      return isPlainRoot
+        ? client.navigate(new URL('./', self.location.origin).href)
+        : Promise.resolve();
+    }));
     const cache = await caches.open(CACHE);
     await Promise.allSettled(OPTIONAL_ASSETS.map(asset => cache.add(asset)));
   })());

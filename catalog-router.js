@@ -23,7 +23,7 @@
   if (isRoot && [...directBookingParameters].some(key => input.has(key))) return;
   if (!isRoot && !catalogPaths.some(pattern => pattern.test(path))) return;
 
-  const destination = new URL(isRoot ? '/' : path, CATALOG_ORIGIN);
+  const destination = new URL(isRoot ? '/r/ramil' : path, CATALOG_ORIGIN);
   const allowed = new Set(attributionParameters);
   if (/^\/(?:r|master)\//.test(path)) {
     profileParameters.forEach(key => allowed.add(key));
