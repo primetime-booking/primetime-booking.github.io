@@ -11,9 +11,9 @@ const serviceWorker = readFileSync(join(root, 'sw.js'), 'utf8');
 const loadAvailabilitySource = app.match(/async function loadAvailability\(\) \{[\s\S]*?\n\}(?=\r?\n\r?\nfunction openWaitlistDialog)/)?.[0] || '';
 assert.ok(loadAvailabilitySource, 'Не удалось извлечь загрузку свободного времени');
 assert.match(app, /retryAvailability[\s\S]*void loadAvailability\(\)/, 'Повтор availability не подключён');
-assert.match(index, /site-update\.js\?v=6[\s\S]*app\.js\?v=3/, 'Клиентская страница не ссылается на новый availability-пакет');
-assert.match(siteUpdate, /sw\.js\?v=6/, 'Update-check не запрашивает новый service worker');
-assert.match(serviceWorker, /CACHE_PREFIX\}v6/, 'Версия PWA-кэша не обновлена');
+assert.match(index, /site-update\.js\?v=7[\s\S]*app\.js\?v=3/, 'Клиентская страница не ссылается на новый availability-пакет');
+assert.match(siteUpdate, /sw\.js\?v=7/, 'Update-check не запрашивает новый service worker');
+assert.match(serviceWorker, /CACHE_PREFIX\}v7/, 'Версия PWA-кэша не обновлена');
 assert.match(serviceWorker, /app\.js\?v=3/, 'Новый app.js не добавлен в PWA-кэш');
 
 const dates = [
