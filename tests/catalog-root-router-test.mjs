@@ -24,8 +24,12 @@ assert.equal(
   route('/', '?utm_source=old&utm_campaign=launch&unknown=drop', '#/home'),
   `${catalog}/r/ramil?utm_source=old&utm_campaign=launch`
 );
-assert.equal(route('/', '?org=minuta-example&service=service-id'), '');
-assert.equal(route('/', '?provider=provider-id'), '');
+assert.equal(route('/', '?org=minuta-example&service=service-id'), `${catalog}/legacy-booking?org=minuta-example&service=service-id`);
+assert.equal(route('/', '?provider=provider-id'), `${catalog}/legacy-booking?provider=provider-id`);
+assert.equal(route('/', '?org=one&org=two&service=bad&theme=warm'), `${catalog}/legacy-booking?org=one&org=two&service=bad`);
+assert.equal(route('/', '?org=one&group=bad'), `${catalog}/legacy-booking?org=one&group=bad`);
+assert.equal(route('/', '?org=one&embed=1', '#private'), `${catalog}/legacy-booking?legacyHash=%23private&org=one&embed=1`);
+assert.equal(route('/index.html', '?org=one', '#/home'), `${catalog}/legacy-booking?org=one`);
 assert.equal(route('/favorites'), `${catalog}/favorites`);
 assert.equal(route('/map/'), `${catalog}/map/`);
 assert.equal(route('/bookings', '?source=old'), `${catalog}/bookings?source=old`);
@@ -35,6 +39,10 @@ assert.equal(
 );
 assert.equal(route('/master/elena-morozova', '?org=drop&from=catalog'), `${catalog}/master/elena-morozova?from=catalog`);
 assert.equal(route('/api/catalog'), '');
+assert.equal(route('/booking.html', '?token=historical'), '');
+assert.equal(route('/my-bookings.html', '?restore=historical'), '');
+assert.equal(route('/messages.html'), '');
+assert.equal(route('/privacy.html'), '');
 assert.equal(route('/unknown'), '');
 assert.equal(route('/', '', '', 'localhost'), '');
 
