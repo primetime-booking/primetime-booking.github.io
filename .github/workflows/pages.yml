@@ -34,6 +34,7 @@ jobs:
           node tests/client-pages-static-test.mjs
           node tests/sw-cache-failure-test.mjs
           node tests/catalog-root-router-test.mjs
+          node tests/legacy-retirement-pwa-test.mjs
           node availability-loading-recovery-test.mjs
           node tests/availability-compact-v165-test.mjs
           node public-booking-flow-test.mjs

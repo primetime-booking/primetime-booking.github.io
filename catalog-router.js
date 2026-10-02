@@ -20,17 +20,25 @@
   const path = current.pathname.replace(/\/{2,}/g, '/');
   const isRoot = rootPaths.has(path);
   const input = new URLSearchParams(current.search);
-  if (isRoot && [...directBookingParameters].some(key => input.has(key))) return;
+  const isLegacyBooking = isRoot && [...directBookingParameters].some(key => input.has(key));
   if (!isRoot && !catalogPaths.some(pattern => pattern.test(path))) return;
 
-  const destination = new URL(isRoot ? '/r/ramil' : path, CATALOG_ORIGIN);
+  const destination = new URL(isLegacyBooking ? '/legacy-booking' : isRoot ? '/r/ramil' : path, CATALOG_ORIGIN);
   const allowed = new Set(attributionParameters);
+  if (isLegacyBooking) {
+    directBookingParameters.forEach(key => allowed.add(key));
+    allowed.add('embed');
+    if (current.hash && current.hash !== '#/home' && current.hash !== '#top') {
+      destination.searchParams.set('legacyHash', current.hash.slice(0, 240));
+    }
+  }
   if (/^\/(?:r|master)\//.test(path)) {
     profileParameters.forEach(key => allowed.add(key));
   }
   input.forEach((value, key) => {
     if (!allowed.has(key)) return;
     if (key === 'returnTo' && !/^\/[a-z0-9/_?=&.-]*$/i.test(value)) return;
+    // Preserve invalid/duplicate direct-link values for fail-closed validation.
     destination.searchParams.append(key, value.slice(0, 240));
   });
 

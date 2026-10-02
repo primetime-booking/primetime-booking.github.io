@@ -47,7 +47,7 @@ const deleted = [];
 const incomplete = createWorker({
   async open() { return { async addAll() { throw new Error('precache failed'); } }; },
   async delete(name) { deleted.push(name); return true; },
-  async keys() { return ['primetime-client-v6']; },
+  async keys() { return ['primetime-client-v7']; },
   async match(request) {
     if (request === './offline.html') return new Response('OLD OFFLINE');
     return undefined;
@@ -57,7 +57,7 @@ await lifecycle(incomplete.handlers.install);
 await lifecycle(incomplete.handlers.activate);
 assert.equal(incomplete.state.skipped, true);
 assert.equal(incomplete.state.claimed, true);
-assert.deepEqual(deleted, ['primetime-client-v7']);
+assert.deepEqual(deleted, ['primetime-client-v9']);
 incomplete.context.request = new Request('https://primetime-booking.github.io/');
 assert.equal(await (await runInNewContext('networkFirstNavigation(request)', incomplete.context)).text(), 'OLD OFFLINE');
 

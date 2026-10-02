@@ -17,7 +17,7 @@ assert.match(manifest.name, /PrimeTime/);
 
 const worker = read('sw.js');
 assert.match(worker, /CACHE_PREFIX = 'primetime-client-'/);
-assert.match(worker, /CACHE = `\$\{CACHE_PREFIX\}v7`/);
+assert.match(worker, /CACHE = `\$\{CACHE_PREFIX\}v9`/);
 assert.match(worker, /client\.navigate\(new URL\('\.\/', self\.location\.origin\)\.href\)/);
 assert.doesNotMatch(worker, /massage-izhevsk-/);
 for (const match of worker.matchAll(/'\.\/([^']+)'/g)) {
@@ -29,9 +29,9 @@ for (const match of worker.matchAll(/'\.\/([^']+)'/g)) {
 const index = read('index.html');
 assert.match(index, /https:\/\/primetime-booking\.github\.io\/og\.png/);
 assert.doesNotMatch(index, /anatomy-trainer\/#\/home/);
-assert.match(index, /catalog-router\.js\?v=6/);
-assert.match(read('404.html'), /\/catalog-router\.js\?v=6/);
-assert.match(read('site-update.js'), /\.\/sw\.js\?v=7/);
+assert.match(index, /catalog-router\.js\?v=8/);
+assert.match(read('404.html'), /\/catalog-router\.js\?v=8/);
+assert.match(read('site-update.js'), /\.\/sw\.js\?v=9/);
 
 const account = read('my-bookings.html');
 assert.match(account, /Восстановить на другом устройстве/);

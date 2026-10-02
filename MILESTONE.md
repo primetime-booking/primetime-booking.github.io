@@ -1,3 +1,21 @@
+# Убрать старый экран записи с прямых ссылок — 2 октября
+
+## Цель
+Один результат этого Pages-проекта: прежняя корневая org/service ссылка открывает подходящий профиль Eldion без старой формы. Live: выполнено 0 из 1; осталось 1. FAQ — отдельный пункт в современном клиентском проекте; общий запрос 0 из 2.
+## Сделано
+Router направляет direct context в отдельный canonical bridge. Router8/SW9/cache-ready9/HTML/site-update согласованы. Исторические booking/my-bookings/messages/privacy пути сохранены.
+## Проверено
+Router/static/SW/recovery/public-flow/compact/PGlite и isolated v7/v8→v9 PWA tests PASS. Старый HTML в browser harness перешёл в synthetic bridge, старая hero/form после перехода отсутствуют.
+## Текущий этап
+Кандидат готовится к передаче ROOT; main и рабочий Pages не менялись.
+## Следующие шаги
+Сначала Eldion1 публикует bridge и FAQ. Затем ROOT принимает актуальный SHA/CI, публикует Pages и проверяет фактические ресурсы и прежнюю ссылку.
+## Зафиксированные решения
+ROOT — единственный издатель Pages; Pro shared redirect и canonical мастер/календарь этот worktree не изменяет. Данные и исторические ссылки не удаляются.
+## Ограничения и блокеры
+Новый canonical bridge и actual service alias ещё не приняты live; до этого Pages не выпускать. Подробнее LEGACY_RETIREMENT_RELEASE.md.
+
+---
 # Восстановление перехода с GitHub Pages при сбое PWA-кэша — v7
 
 - Цель: не допускать `ERR_FAILED` на `primetime-booking.github.io/` при доступной сети и отказе CacheStorage.
